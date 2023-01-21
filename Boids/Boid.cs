@@ -12,6 +12,7 @@ namespace MafeuhBoids.Boids
         private DateTime creationTime = DateTime.Now;
         protected Texture2D Texture2D { get; set; }
         public Point Position { get; set; }
+        public Point Dimensions { get; set; }
         public Vector2 DirectionalSpeed { get; set; } = new Vector2();
         public float RotationSpeed { get; set; }
         public float Orientation { get; set; }
@@ -44,10 +45,7 @@ namespace MafeuhBoids.Boids
                 Texture2D,
                 new Rectangle(
                     Position,
-                    new Point(
-                        Convert.ToInt32(Texture2D.Width * Simulation.CurrentSimulation.Zoom),
-                        Convert.ToInt32(Texture2D.Height * Simulation.CurrentSimulation.Zoom)
-                    )
+                    Dimensions
                 ), 
                 null, 
                 Color.White, 

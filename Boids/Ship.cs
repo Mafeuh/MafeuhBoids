@@ -16,7 +16,7 @@ namespace MafeuhBoids.Boids
         public static Texture2D ShipTexture;
         public Ship() : base(ShipTexture)
         {
-
+            Dimensions = new Point(40, 70);
         }
         public Ship(Point position, float orientation) : base(ShipTexture, position, orientation)
         {
