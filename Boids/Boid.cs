@@ -11,7 +11,7 @@ namespace MafeuhBoids.Boids
     {
         private DateTime creationTime = DateTime.Now;
         protected Texture2D Texture2D { get; set; }
-        public Point Position { get; set; }
+        public Vector2 Position { get; set; }
         public Point Dimensions { get; set; }
         public Vector2 DirectionalSpeed { get; set; } = new Vector2();
         public float RotationSpeed { get; set; }
@@ -22,13 +22,13 @@ namespace MafeuhBoids.Boids
         public Boid(Texture2D texture2D)
         {
             Texture2D = texture2D;
-            Position = new Point(
-                Convert.ToInt32(Game1._graphics.PreferredBackBufferWidth * rnd.NextDouble()),
-                Convert.ToInt32(Game1._graphics.PreferredBackBufferHeight * rnd.NextDouble())
+            Position = new Vector2(
+                Game1._graphics.PreferredBackBufferWidth * rnd.Next(),
+                Game1._graphics.PreferredBackBufferHeight * rnd.Next()
                 );
             Orientation = Convert.ToSingle(rnd.NextDouble()*Math.PI*2);
         }
-        public Boid(Texture2D texture2D, Point position, float orientation)
+        public Boid(Texture2D texture2D, Vector2 position, float orientation)
         {
             Texture2D = texture2D;
             Position = position;
@@ -44,7 +44,7 @@ namespace MafeuhBoids.Boids
             sbatch.Draw(
                 Texture2D,
                 new Rectangle(
-                    Position,
+                    Position.ToPoint(),
                     Dimensions
                 ), 
                 null, 
