@@ -14,11 +14,11 @@ namespace MafeuhBoids.Boids
         private Vector2 RightCaptor { get =>  Position + new Vector2(Convert.ToSingle(Math.Sin(Orientation + Math.PI / 4) * 50),    Convert.ToSingle(-Math.Cos(Orientation + Math.PI / 10) * 50)); }
             
         public static Texture2D ShipTexture;
-        public Ship() : base(ShipTexture)
+        public Ship(Group memberOf) : base(ShipTexture, memberOf)
         {
             Dimensions = new Point(40, 70);
         }
-        public Ship(Vector2 position, float orientation) : base(ShipTexture, position, orientation)
+        public Ship(Vector2 position, float orientation, Group memberOf) : base(ShipTexture, memberOf, position, orientation)
         {
 
         }
@@ -28,8 +28,8 @@ namespace MafeuhBoids.Boids
             {
                 DirectionalSpeed += new Vector2
                     (
-                        Convert.ToInt32(Math.Sin(Orientation)),
-                        -Convert.ToInt32(Math.Cos(Orientation))
+                        Convert.ToSingle(Math.Sin(Orientation)),
+                        -Convert.ToSingle(Math.Cos(Orientation))
                     );
             }
         }

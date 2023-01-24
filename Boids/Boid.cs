@@ -19,21 +19,20 @@ namespace MafeuhBoids.Boids
         public Group MemberOf { get; set; }
 
         private static Random rnd = new Random();
-        public Boid(Texture2D texture2D)
+        public Boid(Texture2D texture2D, Group memberOf)
         {
             Texture2D = texture2D;
             Position = new Vector2(
-                Game1._graphics.PreferredBackBufferWidth * rnd.Next(),
-                Game1._graphics.PreferredBackBufferHeight * rnd.Next()
+                Game1._graphics.PreferredBackBufferWidth * Convert.ToSingle(rnd.NextDouble()),
+                Game1._graphics.PreferredBackBufferHeight * Convert.ToSingle(rnd.NextDouble())
                 );
             Orientation = Convert.ToSingle(rnd.NextDouble()*Math.PI*2);
+            MemberOf = memberOf;
         }
-        public Boid(Texture2D texture2D, Vector2 position, float orientation)
+        public Boid(Texture2D texture2D, Group memberOf, Vector2 position, float orientation) : this(texture2D, memberOf)
         {
-            Texture2D = texture2D;
             Position = position;
             Orientation = orientation;
-
         }
         public abstract void Think();
         public abstract void Act();
@@ -41,14 +40,21 @@ namespace MafeuhBoids.Boids
         public abstract void DrawDetails(SpriteBatch sbatch);
         public virtual void Draw(SpriteBatch sbatch)
         {
+
             sbatch.Draw(
                 Texture2D,
                 new Rectangle(
-                    Position.ToPoint(),
-                    Dimensions
+                    Convert.ToInt32(Position.X),
+                    Convert.ToInt32(Position.Y),
+                    Convert.ToInt32(Dimensions.X / Simulation.CurrentSimulation.Zoom),
+                    Convert.ToInt32(Dimensions.Y / Simulation.CurrentSimulation.Zoom)
+                    /*
+                    JE SAIS PAS NON PLUS COMMENT DIVISER PAR UN NOMBRE PLUS PETIT QUE 1
+                    DIMINUE LA TAILLE MAIS JE POSE PAS DE QUESTIONS
+                    */
                 ), 
                 null, 
-                Color.White, 
+                MemberOf.GroupColor, 
                 Orientation, 
                 new Vector2(
                     Texture2D.Width / 2, 
@@ -56,6 +62,7 @@ namespace MafeuhBoids.Boids
                 ), 
                 SpriteEffects.None, 
                 1f);
+
         }
     }
 }

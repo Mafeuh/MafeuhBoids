@@ -9,9 +9,21 @@ namespace MafeuhBoids.Groups
 {
     public class Group
     {
+        private static Random rnd = new Random();
         public List<Boid> Members { get; set; }
-        public Color TeamColor { get; set; }
+        public Color GroupColor { get; set; } = new Color(rnd.Next(255), rnd.Next(255), rnd.Next(255));
         public bool ShowMembersDetails { get; set; }
+
+
+
+
+        public Group()
+        {
+            Members = new List<Boid>()
+            {
+                new Ship(this)
+            };
+        }
         public virtual void AddBoidToGroup(Boid newBoid)
         {
             newBoid.MemberOf = this;
@@ -19,7 +31,7 @@ namespace MafeuhBoids.Groups
         }
         public virtual void Draw(SpriteBatch sbatch)
         {
-            foreach(Boid b in Members)
+            foreach (Boid b in Members)
             {
                 b.Draw(sbatch);
             }

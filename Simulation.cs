@@ -25,9 +25,10 @@ namespace MafeuhBoids
         public float Zoom { get; set; } = 0.5f;
         public long Score { get; set; }
         public bool ShowScore { get; set; }
-        public bool ShowSimDetails { get; set; }
+        public bool ShowSimDetails { get; set; } = true;
         public List<Group> Groups { get; set; }
         public bool TimeFrozen { get; set; }
+        public bool PromptShowed { get; set; } = false;
         public int TotalShipAmount { get
             {
                 int result = 0;
@@ -35,6 +36,18 @@ namespace MafeuhBoids
                 return result;
             } 
         }
+        public Color BackgroundColor { 
+            get {
+                return TimeFrozen switch
+                {
+                    true => PausedColor,    
+                    false => UnpausedColor
+                };
+            } 
+        }
+        public Color UnpausedColor { get; set; } = Color.CornflowerBlue;
+        public Color PausedColor { get; set; } = Color.Gray;
+
         public Simulation()
         {
             Dimensions = new Point(500, 500);
@@ -47,12 +60,6 @@ namespace MafeuhBoids
             Groups = new List<Group>()
             {
                 new Group()
-                {
-                    Members = new List<Boid>()
-                    {
-                        new Ship()
-                    }
-                }
             };
             TimeFrozen = false;
         }
@@ -65,20 +72,44 @@ namespace MafeuhBoids
         }
         public void Draw(SpriteBatch sbatch)
         {
-            foreach (Group g in Groups) g.Draw(sbatch);
-            if (ShowSimDetails)
+            foreach (Group g in Groups)
             {
-                foreach(Group g in Groups)
-                {
-                    int numEquipe = Groups.IndexOf(g);
-                    g.Draw(sbatch);
-                    sbatch.DrawString(
-                        Game1.Font,
-                        $"Equipe n°{numEquipe}: {g.Members.Count}",
-                        new Vector2(10, 20 * numEquipe),
-                        g.TeamColor);
-                }
+                g.Draw(sbatch);
             }
+            if (ShowSimDetails) DrawSimDetails(sbatch);
+        }
+
+        private void DrawSimDetails(SpriteBatch sbatch)
+        {
+            foreach(Group g in Groups)
+            {
+                int numEquipe = Groups.IndexOf(g);
+                sbatch.DrawString(
+                    Game1.Font,
+                    $"Equipe n°{numEquipe}: {g.Members.Count}",
+                    new Vector2(10, 20 * numEquipe),
+                    g.GroupColor
+                );
+            }
+        }
+
+        public void OpenPrompt()
+        {
+            TimeFrozen = true;
+            PromptShowed = true;
+        }
+        public void ClosePrompt()
+        {
+            TimeFrozen = false;
+            PromptShowed = false;
+        }
+
+        public enum BorderReaction
+        {
+            Bounce,
+            Ignore,
+            Loop,
+            Destroy
         }
     }
 }
